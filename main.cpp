@@ -18,8 +18,16 @@ void shoot(SDL_Event event,Player p){
     }
 }
 
-void checkGameOver(){
-
+bool checkGameOver(Player p){
+    for(int i=0;i<rockCollections.size();i++){
+        if(p.getX()+5 > rockCollections[i].getX() && p.getX()+37 < rockCollections[i].getX()+40){
+            if(p.getY() < rockCollections[i].getY() && p.getY()+62 > rockCollections[i].getY()){
+                std::cout << "Game Over" << std::endl;
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void checkRocketHits(){
@@ -69,8 +77,8 @@ int main(){
     Player ship(140,500);
 
     int count = 0;
-
-    while(!win.isClosed()){
+    bool gameOver = false;
+    while(!win.isClosed() && !gameOver){
 
         int FrameStartTimeMs = SDL_GetTicks();
 
@@ -97,7 +105,7 @@ int main(){
 
         }
 
-        checkGameOver();
+        gameOver = checkGameOver(ship);
         checkRocketHits();
 
         clearMemory();
